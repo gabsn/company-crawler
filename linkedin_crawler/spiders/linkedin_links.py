@@ -1,12 +1,12 @@
 # coding: utf-8
 
-import re, logging, pdb
+import re
 
 from mongoengine import Document, connect
-from mongoengine.fields import *
+from mongoengine.fields import StringField, ListField
 
 from scrapy.http import Request
-from scrapy.spiders import BaseSpider
+from scrapy.spiders import Spider
 
 from linkedin_crawler.items import LinkedinCrawlerItem
 from linkedin_crawler.settings import MONGODB_CONFIG
@@ -17,28 +17,14 @@ RE_DIRECTORY = re.compile(
     r'https?://www\.linkedin\.com/directory/companies-(.+)/'
 )
 
-HEADERS = {
-    'user-agent': (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 "
-        "Safari/537.36"
-    ),
-    'accept': (
-        "text/html,application/xhtml+xml,application/xml;"
-        "q=0.9,image/webp,*/*;q=0.8"),
-    'referer': "https://www.linkedin.com",
-    'accept-encoding': "gzip, deflate, br",
-    'accept-language': "en-US,en;q=0.8",
-}
-
 
 def connect_mongoengine():
     connect(
-            db=MONGODB_CONFIG['db'],
-            username=MONGODB_CONFIG['username'],
-            password=MONGODB_CONFIG['password'],
-            host=MONGODB_CONFIG['host'],
-            port=MONGODB_CONFIG['port'],
+        db=MONGODB_CONFIG['db'],
+        username=MONGODB_CONFIG['username'],
+        password=MONGODB_CONFIG['password'],
+        host=MONGODB_CONFIG['host'],
+        port=MONGODB_CONFIG['port'],
     )
 
 
@@ -56,18 +42,15 @@ def get_parent(directory):
 
 def get_node(directory):
     try:
-        node = Node.objects(name=directory).get() 
+        node = Node.objects(name=directory).get()
     except:
         node = Node(name=directory).save()
 
-    return node 
- 
+    return node
+
 
 def is_leaf(hrefs):
-    if RE_COMPANY_PAGE.match(hrefs[0]):  
-        return True
-    else:
-        return False
+    return RE_COMPANY_PAGE.match(hrefs[0])
 
 
 def update_childs(node, childs):
@@ -75,7 +58,8 @@ def update_childs(node, childs):
 
 
 def update_parent_with_leaf(node):
-    Node.objects(name=get_parent(node.name)).update(push__leaves=node.name, upsert=True)
+    Node.objects(name=get_parent(node.name)) \
+        .update(push__leaves=node.name, upsert=True)
 
 
 class Node(Document):
@@ -85,7 +69,7 @@ class Node(Document):
     leaves = ListField(default=[])
 
 
-class LinkedinLinksSpider(BaseSpider):
+class LinkedinLinksSpider(Spider):
     """Spider getting all company urls
 
     We need to crawl linkedin tree in DFO order
@@ -98,7 +82,7 @@ class LinkedinLinksSpider(BaseSpider):
     def __init__(self):
         super(LinkedinLinksSpider, self).__init__()
         connect_mongoengine()
-        
+
     def parse(self, response):
         """First request needed to get cookies"""
         yield Request(
@@ -107,17 +91,10 @@ class LinkedinLinksSpider(BaseSpider):
 
     def parse_by_name(self, response):
         """Browse by name"""
-        # for href in response.xpath('//*[@class="bucket-list"]//@href'):
-        #     yield Request(
-        #         url=href.extract(),
-        #         meta={'priority': 0},
-        #         callback=self.parse_all_links)
-
-        z_url = 'https://www.linkedin.com/directory/companies-z-100/'
-
-        yield Request(
-            url=z_url,
-            callback=self.parse_all_links)
+        for href in response.xpath('//*[@class="bucket-list"]//@href'):
+            yield Request(
+                url=href.extract(),
+                callback=self.parse_all_links)
 
     def parse_all_links(self, response):
         hrefs = response.xpath('//*[@class="columns"]//@href').extract()
@@ -137,7 +114,7 @@ class LinkedinLinksSpider(BaseSpider):
             update_parent_with_leaf(node)
 
         # Current directory is an internal node
-        else:  
+        else:
             for href in hrefs:
                 child = get_dir(href)
 
