@@ -1,0 +1,2 @@
+#!/bin/bash
+mongoexport -h mongodb.services.dev.mp.mo.sap.corp:27017 -u gmarignier -p xZX7Tb4xkFSrAf8w --db gmarignier_openweb -c linkedin_links -o /home/gmarignier/workspace/linkedin_crawler/linkedin_links.json
