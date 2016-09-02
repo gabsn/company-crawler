@@ -1,7 +1,11 @@
 # coding: utf-8
 
-import scrapy
+from scrapy import Item, Field
 
 
-class LinkedinLinksItem(scrapy.Item):
-    url = scrapy.Field()
+class LinkedinLinksItem(Item):
+    url = Field()
+
+
+class LinkedinCompaniesItem(Item):
+    url = Field()

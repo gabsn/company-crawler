@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
-# Scrapy settings for linkedin project
+import os
+
+SETTINGS_PATH = os.path.dirname(os.path.realpath(__file__))
 
 BOT_NAME = 'Spiderman'
 
@@ -30,7 +32,7 @@ AUTOTHROTTLE_MAX_DELAY=4
 # Average number of requests Scrapy should be sending in parallel to remote websites.
 AUTOTHROTTLE_TARGET_CONCURRENCY=2
 # Enable showing throttling stats for every response received:
-AUTOTHROTTLE_DEBUG=True
+#AUTOTHROTTLE_DEBUG=True
 
 # Never set a download delay lower than DOWNLOAD_DELAY.
 DOWNLOAD_DELAY=0.25
