@@ -9,7 +9,7 @@ from scrapy.http import Request
 from scrapy.spiders import Spider
 
 from linkedin_crawler.items import LinkedinCrawlerItem
-from linkedin_crawler.settings import MONGODB_CONFIG
+from linkedin_crawler.settings import MONGODB
 
 RE_COMPANY_PAGE = re.compile(r'https?://www\.linkedin\.com/company/.+')
 RE_PARENT = re.compile(r'((-?[^-]+)+)-[^-]+')
@@ -20,11 +20,11 @@ RE_DIRECTORY = re.compile(
 
 def connect_mongoengine():
     connect(
-        db=MONGODB_CONFIG['db'],
-        username=MONGODB_CONFIG['username'],
-        password=MONGODB_CONFIG['password'],
-        host=MONGODB_CONFIG['host'],
-        port=MONGODB_CONFIG['port'],
+        db=MONGODB['db'],
+        username=MONGODB['username'],
+        password=MONGODB['password'],
+        host=MONGODB['host'],
+        port=MONGODB['port'],
     )
 
 
@@ -77,6 +77,7 @@ class LinkedinLinksSpider(Spider):
     """
 
     name = "LinkedinLinksSpider"
+    collection = "linkedin_links"
     start_urls = ['https://www.linkedin.com']
 
     def __init__(self):
