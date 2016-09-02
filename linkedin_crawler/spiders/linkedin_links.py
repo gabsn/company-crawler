@@ -8,7 +8,7 @@ from mongoengine.fields import StringField, ListField
 from scrapy.http import Request
 from scrapy.spiders import Spider
 
-from linkedin_crawler.items import LinkedinCrawlerItem
+from linkedin_crawler.items import LinkedinLinksItem
 from linkedin_crawler.settings import MONGODB
 
 RE_COMPANY_PAGE = re.compile(r'https?://www\.linkedin\.com/company/.+')
@@ -106,7 +106,7 @@ class LinkedinLinksSpider(Spider):
 
         # Current directory is a leaf
         if is_leaf(hrefs):
-            item = LinkedinCrawlerItem()
+            item = LinkedinLinksItem()
 
             for href in hrefs:
                 item['url'] = href
