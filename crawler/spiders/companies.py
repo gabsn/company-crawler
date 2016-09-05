@@ -1,8 +1,6 @@
 # coding: utf-8
 
-import json
 from datetime import datetime, timedelta
-from os.path import join
 
 from mongoengine import Document
 from mongoengine import StringField, DateTimeField
@@ -11,16 +9,7 @@ from scrapy.spiders import Spider
 
 from crawler.items import CompaniesItem
 from crawler.extractor import extract
-from crawler.settings import SETTINGS_PATH
 from utils.mongodb import connect_mongoengine
-
-
-def get_company_links():
-    links = []
-    with open(join(SETTINGS_PATH, 'data/linkedin_links.json')) as f_links:
-        for line in f_links:
-            links.append(json.loads(line)['url'])
-    return links
 
 
 def get_links():
