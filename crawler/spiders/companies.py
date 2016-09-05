@@ -1,12 +1,8 @@
 # coding: utf-8
 
-import pdb
-import re
 import json
-import lxml
 from datetime import datetime, timedelta
 from os.path import join
-from urlparse import urljoin
 
 from mongoengine import Document
 from mongoengine import StringField, DateTimeField
@@ -39,7 +35,7 @@ def get_last_fetch_at(url):
         last_fetch_at = datetime.now()
 
     return last_fetch_at
- 
+
 
 def update_last_fetch_at(url):
     Links.objects(url=url).update_one(set__last_fetch_at=datetime.now())
@@ -79,4 +75,3 @@ class CompaniesSpider(Spider):
             '//code[@id="stream-right-rail-embed-id-content"]')
         if raw_data:
             yield extract(item, raw_data[0].extract())
-

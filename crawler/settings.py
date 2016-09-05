@@ -35,7 +35,7 @@ AUTOTHROTTLE_TARGET_CONCURRENCY=2
 #AUTOTHROTTLE_DEBUG=True
 
 # Never set a download delay lower than DOWNLOAD_DELAY.
-DOWNLOAD_DELAY=0.25
+DOWNLOAD_DELAY=0.5
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS=8
