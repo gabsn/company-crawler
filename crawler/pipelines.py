@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
 from pymongo import MongoClient, ASCENDING
 from scrapy.exceptions import DropItem
 
-from linkedin_crawler.settings import MONGODB
+from crawler.settings import MONGODB
 
 
 class MongoDBPipeline(object):

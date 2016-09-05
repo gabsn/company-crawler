@@ -3,9 +3,9 @@
 from scrapy import Item, Field
 
 
-class LinkedinLinksItem(Item):
+class LinksItem(Item):
     url = Field()
 
 
-class LinkedinCompaniesItem(Item):
+class CompaniesItem(Item):
     url = Field()

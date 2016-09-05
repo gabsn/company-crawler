@@ -8,8 +8,8 @@ from mongoengine.fields import StringField, ListField
 from scrapy.http import Request
 from scrapy.spiders import Spider
 
-from linkedin_crawler.items import LinkedinLinksItem
-from linkedin_crawler.settings import MONGODB
+from crawler.items import LinksItem
+from crawler.settings import MONGODB
 
 RE_COMPANY_PAGE = re.compile(r'https?://www\.linkedin\.com/company/.+')
 RE_PARENT = re.compile(r'((-?[^-]+)+)-[^-]+')
@@ -69,19 +69,19 @@ class Node(Document):
     leaves = ListField(default=[])
 
 
-class LinkedinLinksSpider(Spider):
+class LinksSpider(Spider):
     """Spider getting all company urls
 
     We need to crawl linkedin tree in DFO order
 
     """
 
-    name = "LinkedinLinksSpider"
+    name = "Links"
     collection = "linkedin_links"
     start_urls = ['https://www.linkedin.com']
 
     def __init__(self):
-        super(LinkedinLinksSpider, self).__init__()
+        super(LinksSpider, self).__init__()
         connect_mongoengine()
 
     def parse(self, response):
@@ -106,7 +106,7 @@ class LinkedinLinksSpider(Spider):
 
         # Current directory is a leaf
         if is_leaf(hrefs):
-            item = LinkedinLinksItem()
+            item = LinksItem()
 
             for href in hrefs:
                 item['url'] = href

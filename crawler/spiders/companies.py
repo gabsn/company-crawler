@@ -7,8 +7,8 @@ from os.path import join
 from scrapy.http import Request
 from scrapy.spiders import Spider
 
-from linkedin_crawler.items import LinkedinCompaniesItem
-from linkedin_crawler.settings import SETTINGS_PATH
+from crawler.items import CompaniesItem
+from crawler.settings import SETTINGS_PATH
 
 
 def get_company_links():
@@ -19,8 +19,8 @@ def get_company_links():
     return links
 
 
-class LinkedinCompaniesSpider(Spider):
-    name = "LinkedinCompaniesSpider"
+class CompaniesSpider(Spider):
+    name = "Companies"
     collection = "linkedin_companies"
     start_urls = ['https://www.linkedin.com']
 
@@ -36,6 +36,6 @@ class LinkedinCompaniesSpider(Spider):
             self.links.pop(0)
 
     def parse_company(self, response):
-        item = LinkedinCompaniesItem()
+        item = CompaniesItem()
         item['url'] = response.url
         yield item

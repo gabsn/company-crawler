@@ -5,7 +5,7 @@ import logging
 
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 
-from linkedin_crawler.data.useragents import USER_AGENTS
+from crawler.data.useragents import USER_AGENTS
 
 
 def display_user_agent(request):
