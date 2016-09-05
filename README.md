@@ -1,1 +1,1 @@
-# linkedin-company-crawler
+# Company crawler
