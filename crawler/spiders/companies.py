@@ -1,9 +1,12 @@
 # coding: utf-8
 
 import pdb
+import re
 import json
+import lxml
 from datetime import datetime, timedelta
 from os.path import join
+from urlparse import urljoin
 
 from mongoengine import Document
 from mongoengine import StringField, DateTimeField
@@ -11,6 +14,7 @@ from scrapy.http import Request
 from scrapy.spiders import Spider
 
 from crawler.items import CompaniesItem
+from crawler.extractor import extract
 from crawler.settings import SETTINGS_PATH
 from utils.mongodb import connect_mongoengine
 
@@ -26,6 +30,16 @@ def get_company_links():
 def get_links():
     return Links.objects(last_fetch_at__exists=False)
 
+
+def get_last_fetch_at(url):
+    try:
+        last_fetch_at = Links.objects(url=url).first().last_fetch_at
+    except:
+        update_last_fetch_at(url)
+        last_fetch_at = datetime.now()
+
+    return last_fetch_at
+ 
 
 def update_last_fetch_at(url):
     Links.objects(url=url).update_one(set__last_fetch_at=datetime.now())
@@ -56,7 +70,13 @@ class CompaniesSpider(Spider):
 
     def parse_company(self, response):
         update_last_fetch_at(response.url)
+
         item = CompaniesItem()
         item['url'] = response.url
-        yield item
+        item['last_fetch_at'] = get_last_fetch_at(response.url)
+
+        raw_data = response.xpath(
+            '//code[@id="stream-right-rail-embed-id-content"]')
+        if raw_data:
+            yield extract(item, raw_data[0].extract())
 
