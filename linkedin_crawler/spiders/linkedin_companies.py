@@ -3,6 +3,7 @@
 import pdb
 import json
 
+from os.path import join
 from scrapy.http import Request
 from scrapy.spiders import Spider
 
@@ -11,7 +12,10 @@ from linkedin_crawler.settings import SETTINGS_PATH
 
 
 def get_company_links():
-    links = json.load(open(join(SETTINGS_PATH, 'data/linkedin_links.json')))
+    links = []
+    with open(join(SETTINGS_PATH, 'data/linkedin_links.json')) as f_links:
+        for line in f_links:
+            links.append(json.loads(line)['url'])
     return links
 
 
@@ -22,9 +26,16 @@ class LinkedinCompaniesSpider(Spider):
 
     def parse(self, response):
         """First request needed to get cookies"""
-        links = get_company_links()
-        pdb.set_trace()
+        self.links = get_company_links()
 
-        yield Request(
-            url='',
-            callback=self.parse_by_name)
+        while (self.links):
+            yield Request(
+                url=self.links[0],
+                callback=self.parse_company)
+
+            self.links.pop(0)
+
+    def parse_company(self, response):
+        item = LinkedinCompaniesItem()
+        item['url'] = response.url
+        yield item
