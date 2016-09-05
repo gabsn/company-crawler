@@ -2,30 +2,20 @@
 
 import re
 
-from mongoengine import Document, connect
+from mongoengine import Document
 from mongoengine.fields import StringField, ListField
 
 from scrapy.http import Request
 from scrapy.spiders import Spider
 
 from crawler.items import LinksItem
-from crawler.settings import MONGODB
+from utils.mongodb import connect_mongoengine
 
 RE_COMPANY_PAGE = re.compile(r'https?://www\.linkedin\.com/company/.+')
 RE_PARENT = re.compile(r'((-?[^-]+)+)-[^-]+')
 RE_DIRECTORY = re.compile(
     r'https?://www\.linkedin\.com/directory/companies-(.+)/'
 )
-
-
-def connect_mongoengine():
-    connect(
-        db=MONGODB['db'],
-        username=MONGODB['username'],
-        password=MONGODB['password'],
-        host=MONGODB['host'],
-        port=MONGODB['port'],
-    )
 
 
 def get_dir(url):
