@@ -21,4 +21,3 @@ class CompaniesItem(Item):
     website = Field()
     square_logo = Field()
     job_count = Field()
-    employee_count = Field()

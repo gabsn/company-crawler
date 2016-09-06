@@ -15,7 +15,6 @@ RE_YEAR_FOUNDED = re.compile(r'"yearFounded":(\d+),')
 RE_HEADQUARTERS = re.compile(r'"headquarters":({[^}]*})')
 RE_SPECIALTIES = re.compile(r'"specialties":(\[[^\]]*\])')
 RE_JOB_COUNT = re.compile(r'"jobCount":(\d+),')
-RE_EMPLOYEE_COUNT = re.compile(r'"employeeCount":(\d+),')
 
 
 def extract(item, raw_data):
@@ -64,9 +63,5 @@ def extract(item, raw_data):
     m_job_count = RE_JOB_COUNT.search(raw_data)
     if m_job_count:
         item['job_count'] = m_job_count.group(1)
-
-    m_employee_count = RE_EMPLOYEE_COUNT.search(raw_data)
-    if m_employee_count:
-        item['employee_count'] = m_employee_count.group(1)
 
     return item
