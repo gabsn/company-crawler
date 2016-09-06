@@ -22,7 +22,7 @@ def get_links():
 def get_last_fetch_at(url):
     now = datetime.now()
     Links.objects(url=url).update_one(set__last_fetch_at=now)
-    return now 
+    return now
 
 
 class Links(Document):
@@ -54,6 +54,6 @@ class CompaniesSpider(Spider):
         item = CompaniesItem()
         item['url'] = response.url
         item['last_fetch_at'] = get_last_fetch_at(response.url)
-        item = extract(item, raw_data.extract_first()) 
+        item = extract(item, raw_data.extract_first())
 
         yield item
