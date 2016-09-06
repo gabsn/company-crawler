@@ -11,11 +11,15 @@ from scrapy.spiders import Spider
 from crawler.items import LinksItem
 from utils.mongodb import connect_mongoengine
 
+
 RE_COMPANY_PAGE = re.compile(r'https?://www\.linkedin\.com/company/.+')
 RE_PARENT = re.compile(r'((-?[^-]+)+)-[^-]+')
 RE_DIRECTORY = re.compile(
     r'https?://www\.linkedin\.com/directory/companies-(.+)/'
 )
+
+X_LETTERS = '//*[@class="bucket-list"]//@href'
+X_LINKS = '//*[@class="columns"]//@href'
 
 
 def get_dir(url):
@@ -60,11 +64,7 @@ class Node(Document):
 
 
 class LinksSpider(Spider):
-    """Spider getting all company urls
-
-    We need to crawl linkedin tree in DFO order
-
-    """
+    """Spider getting all company urls"""
 
     name = "Links"
     collection = "linkedin_links"
@@ -78,17 +78,18 @@ class LinksSpider(Spider):
         """First request needed to get cookies"""
         yield Request(
             url="https://www.linkedin.com/directory/companies/",
-            callback=self.parse_by_name)
+            callback=self.parse_by_letter)
 
-    def parse_by_name(self, response):
-        """Browse by name"""
-        for href in response.xpath('//*[@class="bucket-list"]//@href'):
+    def parse_by_letter(self, response):
+        """Browse by first letter"""
+        for href in response.xpath(X_LETTERS):
             yield Request(
                 url=href.extract(),
                 callback=self.parse_all_links)
 
     def parse_all_links(self, response):
-        hrefs = response.xpath('//*[@class="columns"]//@href').extract()
+        """Browse all links"""
+        hrefs = response.xpath(X_LINKS).extract()
         childs = [get_dir(href) for href in hrefs]
 
         node = get_node(get_dir(response.url))

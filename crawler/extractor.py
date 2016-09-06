@@ -18,6 +18,9 @@ RE_JOB_COUNT = re.compile(r'"jobCount":(\d+),')
 
 
 def extract(item, raw_data):
+    if not raw_data:
+        return
+
     m_company_name = RE_COMPANY_NAME.search(raw_data)
     if m_company_name:
         item['company_name'] = m_company_name.group(1)
