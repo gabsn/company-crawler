@@ -1,16 +1,17 @@
 # coding: utf-8
 
 import pdb
-import multiprocessing
-from billiard import Process
+import logging
+from multiprocessing import Process, active_children
 
 from time import sleep
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from twisted.internet import reactor
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.log import configure_logging
 
 from crawler.spiders.companies import CompaniesSpider
-from scrapy.crawler import CrawlerProcess
 from utils.mongodb import connect_mongoengine
 from crawler.mongo import Links
 
@@ -41,8 +42,9 @@ if __name__ == "__main__":
     # Connect to dataBase
     connect_mongoengine()
 
-    while (Links.to_crawl() > 3000):
+    while (Links.to_crawl() > 0):
         crawler = CompaniesCrawler()
-        spider = CompaniesSpider()
-        crawler.crawl(spider)
-        sleep(5)
+        crawler.crawl(CompaniesSpider())
+
+        while active_children():
+            sleep(0.1)
