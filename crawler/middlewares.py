@@ -3,6 +3,7 @@
 import random
 import pdb
 from time import sleep
+from billiard import Process
 
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 from scrapy.utils.response import response_status_message
@@ -13,11 +14,23 @@ from scrapy.crawler import *
 from scrapy.utils.project import get_project_settings
 from scrapy.settings import Settings
 
+from twisted.internet import reactor
+from scrapy.utils.log import configure_logging
 
 
 from crawler.data.useragents import USER_AGENTS
 from crawler.spiders.companies import CompaniesSpider
 
+class UrlCrawlerScript(Process):
+    def __init__(self, spider):
+        Process.__init__(self)
+        self.crawler = CrawlerRunner()
+        self.crawler.crawl(spider)  
+
+    def run(self):
+        d = self.crawler.join()
+        d.addBoth(lambda _: reactor.stop())       
+        #reactor.run(0)
 
 class StatusHandlerMiddleware(object):
     """Close spider when encounters 999 status code"""
@@ -32,22 +45,15 @@ class StatusHandlerMiddleware(object):
     def process_response(self, request, response, spider):
         if response.status in [999] and spider.running:
             reason = "Received 999 status code"
-            spider.running = False
-
             self.crawler.engine.close_spider(spider, reason)
-            sleep(2)
-            settings = get_project_settings()
-            crawler = Crawler(CompaniesSpider, settings)
-            crawler.crawl()
+
+            #crawler = UrlCrawlerScript(CompaniesSpider)
+            #crawler.start()
+
+            #crawler = Crawler(CompaniesSpider, settings)
+            #crawler.crawl()
 
         return response
-            #runner = CrawlerRunner()
-            #runner.crawl(CompaniesSpider)
-        #new_spider = CompaniesSpider()
-        #new_crawler = create_crawler(new_spider)
-        #new_crawler.engine.open_spider(new_spider)
-
-        #return response
 
 
 class RotateUserAgentMiddleware(UserAgentMiddleware):

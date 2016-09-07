@@ -1,6 +1,6 @@
 # coding: utf-8
 
-import time
+import time, pdb
 from datetime import datetime, timedelta
 
 from mongoengine import Document
@@ -9,6 +9,10 @@ from scrapy.http import Request
 from scrapy.spiders import Spider
 from scrapy.xlib.pydispatch import dispatcher
 from scrapy import signals
+from scrapy.crawler import *
+from scrapy.utils.project import get_project_settings
+
+from twisted.internet import reactor
 
 from crawler.items import CompaniesItem
 from crawler.extractor import extract_from
@@ -42,11 +46,18 @@ class CompaniesSpider(Spider):
     def __init__(self):
         super(CompaniesSpider, self).__init__()
         connect_mongoengine()
-        dispatcher.connect(self.spider_closed, signals.spider_closed)
+        #dispatcher.connect(self.spider_closed, signals.spider_closed)
         self.running = True
 
     def spider_closed(self, reason):
         print "--------------> restart"
+        spider = CompaniesSpider()
+        settings = get_project_settings()
+        crawler = CrawlerRunner()
+        crawler.crawl(CompaniesSpider())
+        crawler.start()
+        pdb.set_trace()
+        
 
     def handle_error(self, failure):
         print "--------------------------------------------------------------"
