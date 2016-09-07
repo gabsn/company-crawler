@@ -1,14 +1,17 @@
 # coding: utf-8
 
+import time
 from datetime import datetime, timedelta
 
 from mongoengine import Document
 from mongoengine import StringField, DateTimeField
 from scrapy.http import Request
 from scrapy.spiders import Spider
+from scrapy.xlib.pydispatch import dispatcher
+from scrapy import signals
 
 from crawler.items import CompaniesItem
-from crawler.extractor import extract
+from crawler.extractor import extract_from
 from utils.mongodb import connect_mongoengine
 
 
@@ -39,6 +42,20 @@ class CompaniesSpider(Spider):
     def __init__(self):
         super(CompaniesSpider, self).__init__()
         connect_mongoengine()
+        dispatcher.connect(self.spider_closed, signals.spider_closed)
+        self.running = True
+
+    def spider_closed(self, reason):
+        print "--------------> restart"
+
+    def handle_error(self, failure):
+        print "--------------------------------------------------------------"
+        self.log("Error Handle: %s" % failure.request)
+        self.log("Sleeping 2 seconds")
+        print "--------------------------------------------------------------"
+        yield Request(
+            url=self.start_urls[0],
+            callback=self.parse)
 
     def parse(self, response):
         """First request needed to get cookies"""
@@ -49,11 +66,11 @@ class CompaniesSpider(Spider):
                     callback=self.parse_company)
 
     def parse_company(self, response):
-        raw_data = response.xpath(X_RAW_DATA)
+        raw_data = response.xpath(X_RAW_DATA).extract_first(default="")
 
         item = CompaniesItem()
         item['url'] = response.url
         item['last_fetch_at'] = get_last_fetch_at(response.url)
-        item = extract(item, raw_data.extract_first())
+        item.update(extract_from(raw_data))
 
         yield item

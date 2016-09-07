@@ -17,9 +17,8 @@ RE_SPECIALTIES = re.compile(r'"specialties":(\[[^\]]*\])')
 RE_JOB_COUNT = re.compile(r'"jobCount":(\d+),')
 
 
-def extract(item, raw_data):
-    if not raw_data:
-        return
+def extract_from(raw_data):
+    item = {}
 
     m_company_name = RE_COMPANY_NAME.search(raw_data)
     if m_company_name:

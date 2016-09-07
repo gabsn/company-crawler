@@ -13,6 +13,7 @@ NEWSPIDER_MODULE = 'crawler.spiders'
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'crawler.middlewares.StatusHandlerMiddleware': 100,
     'crawler.middlewares.RotateUserAgentMiddleware': 400,
 }
 
@@ -30,7 +31,7 @@ AUTOTHROTTLE_START_DELAY=2
 # The maximum download delay to be set in case of high latencies
 AUTOTHROTTLE_MAX_DELAY=4
 # Average number of requests Scrapy should be sending in parallel to remote websites.
-AUTOTHROTTLE_TARGET_CONCURRENCY=0.8
+AUTOTHROTTLE_TARGET_CONCURRENCY=1
 # Enable showing throttling stats for every response received:
 #AUTOTHROTTLE_DEBUG=True
 
@@ -59,8 +60,8 @@ MONGODB = {
 }
 
 # Retry request if a 999 received
-RETRY_TIMES = 5 
-RETRY_HTTP_CODES = [500, 502, 503, 504, 408, 999]
+#RETRY_TIMES = 5 
+#RETRY_HTTP_CODES = [500, 502, 503, 504, 408, 999]
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED=False
