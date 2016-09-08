@@ -1,19 +1,14 @@
 # coding: utf-8
 
-import pdb
-import logging
+from time import sleep
 from multiprocessing import Process, active_children
 
-from time import sleep
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from twisted.internet import reactor
-from scrapy.crawler import CrawlerProcess
-from scrapy.utils.log import configure_logging
 
+from crawler.mongo import Links
 from crawler.spiders.companies import CompaniesSpider
 from utils.mongodb import connect_mongoengine
-from crawler.mongo import Links
 
 SETTINGS = get_project_settings()
 
@@ -47,4 +42,4 @@ if __name__ == "__main__":
         crawler.crawl(CompaniesSpider())
 
         while active_children():
-            sleep(0.1)
+            sleep(2)

@@ -1,18 +1,11 @@
 # coding: utf-8
 
-import time, pdb
 from datetime import datetime, timedelta
 
 from mongoengine import Document
 from mongoengine import StringField, DateTimeField
 from scrapy.http import Request
 from scrapy.spiders import Spider
-from scrapy.xlib.pydispatch import dispatcher
-from scrapy import signals
-from scrapy.crawler import *
-from scrapy.utils.project import get_project_settings
-
-from twisted.internet import reactor
 
 from crawler.items import CompaniesItem
 from crawler.extractor import extract_from
@@ -46,27 +39,6 @@ class CompaniesSpider(Spider):
     def __init__(self):
         super(CompaniesSpider, self).__init__()
         connect_mongoengine()
-        #dispatcher.connect(self.spider_closed, signals.spider_closed)
-        self.running = True
-
-    def spider_closed(self, reason):
-        print "--------------> restart"
-        spider = CompaniesSpider()
-        settings = get_project_settings()
-        crawler = CrawlerRunner()
-        crawler.crawl(CompaniesSpider())
-        crawler.start()
-        pdb.set_trace()
-        
-
-    def handle_error(self, failure):
-        print "--------------------------------------------------------------"
-        self.log("Error Handle: %s" % failure.request)
-        self.log("Sleeping 2 seconds")
-        print "--------------------------------------------------------------"
-        yield Request(
-            url=self.start_urls[0],
-            callback=self.parse)
 
     def parse(self, response):
         """First request needed to get cookies"""
