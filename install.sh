@@ -3,14 +3,14 @@
 PROJECT_NAME=company-crawler
 export CC_ROOT=$(pwd)
 
-if [ -n "$(pip list | grep -F virtualenv)" ]; then
-    echo "Installing virtualenv..."
-    sudo pip install virtualenv
-fi
+#if [ -n "$(pip list | grep -F virtualenv)" ]; then
+#    echo "Installing virtualenv..."
+#    pip install virtualenv
+#fi
 
 if [ -n "$(pip list | grep -F virtualenvwrapper)" ]; then
     echo "Installing virtualenvwrapper..."
-    sudo pip install virtualenv
+    pip install virtualenvwrapper
     export WORKON_HOME=$HOME/.virtualenvs
 fi
 
