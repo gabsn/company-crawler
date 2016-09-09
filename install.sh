@@ -3,13 +3,14 @@
 PROJECT_NAME=company-crawler
 export CC_ROOT=$(pwd)
 
-echo "Installing virtualenv..."
 if [ -n "$(pip list | grep -F virtualenv)" ]; then
-    pip install virtualenv
+    echo "Installing virtualenv..."
+    sudo pip install virtualenv
 fi
 
-echo "Installing virtualenvwrapper..."
 if [ -n "$(pip list | grep -F virtualenvwrapper)" ]; then
+    echo "Installing virtualenvwrapper..."
+    sudo pip install virtualenv
     export WORKON_HOME=$HOME/.virtualenvs
 fi
 
@@ -18,14 +19,16 @@ source `which virtualenvwrapper.sh`
 if [ ! -d $WORKON_HOME/$PROJECT_NAME ]; then
     mkvirtualenv $PROJECT_NAME
     workon $PROJECT_NAME
-    pip install -r requirements.txt
 else
     echo "$PROJECT_NAME environment already exists."
 fi
 
+echo "Installing dependencies"
+pip install -r requirements.txt
+
 echo "Adding binaries to \$PATH..."
 if [ -n $(echo $PATH | grep -q "$CC_ROOT/bin") ]; then
-    export PATH=$PATH:$CC_ROOT/bin
+    export PATH=$CC_ROOT/bin:$PATH
 fi
     echo "Binaries already added to \$PATH."
 
