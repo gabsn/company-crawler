@@ -1,3 +1,6 @@
 *.pyc
 *.json
 env/
+build/
+dist/
+*.egg-info/
