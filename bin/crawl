@@ -1,10 +1,12 @@
 #!/bin/bash
 
-if [ $# != 1 ]; then
-    echo -e "Usage: $0 [links|companies]"
-    exit 1
-elif [ $1 = "links" ]; then
-    echo "crawling links..."
-elif [ $1 = "companies" ]; then
-    echo "crawling companies..."
+# Go to project root
+cd $CC_ROOT
+
+if [ $1 = "links" ] && [ $# = 1 ]; then
+    scrapy crawl Links
+elif [ $1 = "companies" ] && [ $# = 1 ]; then
+    python crawl_companies.py
+else
+    echo -e "\nUsage: crawl [links|companies]\n"
 fi

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 PROJECT_NAME=company-crawler
+export CC_ROOT=$(pwd)
 
 echo "Installing virtualenv..."
 if [ -n "$(pip list | grep -F virtualenv)" ]; then
@@ -23,9 +24,8 @@ else
 fi
 
 echo "Adding binaries to \$PATH..."
-export COMPANY_CRAWLER=$(pwd)
-if [ $(echo $PATH | grep -q "$COMPANY_CRAWLER/bin") ]; then
-    export PATH=$PATH:$COMPANY_CRAWLER/bin
+if [ -n $(echo $PATH | grep -q "$CC_ROOT/bin") ]; then
+    export PATH=$PATH:$CC_ROOT/bin
 fi
     echo "Binaries already added to \$PATH."
 
