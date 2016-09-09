@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# != 1 ]; then
+    echo -e "Usage: $0 [links|companies]"
+    exit 1
+elif [ $1 = "links" ]; then
+    echo "crawling links..."
+elif [ $1 = "companies" ]; then
+    echo "crawling companies..."
+fi
