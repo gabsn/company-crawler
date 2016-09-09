@@ -6,7 +6,7 @@ cd $CC_ROOT
 if [ $1 = "links" ] && [ $# = 1 ]; then
     scrapy crawl Links
 elif [ $1 = "companies" ] && [ $# = 1 ]; then
-    python crawl_companies.py
+    python bin/crawl_companies.py
 else
     echo -e "\nUsage: crawl [links|companies]\n"
 fi
