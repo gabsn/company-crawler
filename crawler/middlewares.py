@@ -18,7 +18,7 @@ class StatusHandlerMiddleware(object):
         return cls(crawler)
 
     def process_response(self, request, response, spider):
-        if response.status in [999] and spider.running:
+        if response.status in [999]:
             reason = "Received 999 status code"
             self.crawler.engine.close_spider(spider, reason)
 
