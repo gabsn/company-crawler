@@ -4,7 +4,7 @@ Crawling of Linkedin company pages and building of the database associated.
 
 ## Setup
 
-1. Install pip, virtualenv
+1. Install pip and virtualenv
 
   ```bash
   sudo apt-get install python-pip virtualenv
@@ -18,7 +18,7 @@ Crawling of Linkedin company pages and building of the database associated.
   ```
   
 3. Setup a virtual environment
-  
+
   ```bash
   virtualenv env
   source env/bin/activate
