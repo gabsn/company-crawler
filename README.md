@@ -1,7 +1,5 @@
 # Company crawler
 
-## Goal
-
 Crawling of Linkedin company pages and building of the database associated.
 
 ## Setup
@@ -11,4 +9,16 @@ cd $(PROJECT_ROOT)
 git clone https://github.com/gabsn/company-crawler.git
 cd company-crawler
 source install.sh
+```
+
+## Commands
+
+- Get all company urls and put them in a Mongo database.
+```bash
+crawl links
+```
+
+- Download each company page, parse it and put the data in another database.
+```bash
+crawl companies
 ```
