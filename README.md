@@ -16,12 +16,19 @@ Crawling of Linkedin company pages and building of the database associated.
   git clone https://github.com/gabsn/company-crawler.git
   cd company-crawler
   ```
-3. Create a new virtual environment
+  
+3. Setup a virtual environment
   
   ```bash
   virtualenv env
   source env/bin/activate
   pip install -r requirements.txt
+  ```
+  
+4. Setup your path
+
+  ```bash
+  source install.sh
   ```
 
 ## Commands
