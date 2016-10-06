@@ -4,19 +4,24 @@ Crawling of Linkedin company pages and building of the database associated.
 
 ## Setup
 
-1. Install pip
+1. Install pip, virtualenv
 
   ```bash
-  sudo apt-get install pip
+  sudo apt-get install python-pip virtualenv
   ```
 
 2. Clone the project
 
   ```bash
-  cd $(PROJECT_ROOT)
   git clone https://github.com/gabsn/company-crawler.git
   cd company-crawler
-  source install.sh
+  ```
+3. Create a new virtual environment
+  
+  ```bash
+  virtualenv env
+  source env/bin/activate
+  pip install -r requirements.txt
   ```
 
 ## Commands
