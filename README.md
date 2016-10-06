@@ -4,12 +4,20 @@ Crawling of Linkedin company pages and building of the database associated.
 
 ## Setup
 
-```bash
-cd $(PROJECT_ROOT)
-git clone https://github.com/gabsn/company-crawler.git
-cd company-crawler
-source install.sh
-```
+1. Install pip
+
+  ```bash
+  sudo apt-get install pip
+  ```
+
+2. Clone the project
+
+  ```bash
+  cd $(PROJECT_ROOT)
+  git clone https://github.com/gabsn/company-crawler.git
+  cd company-crawler
+  source install.sh
+  ```
 
 ## Commands
 
