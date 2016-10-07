@@ -9,7 +9,7 @@ BOT_NAME = 'Spiderman'
 SPIDER_MODULES = ['crawler.spiders']
 NEWSPIDER_MODULE = 'crawler.spiders'
 
-LOG_LEVEL='INFO'
+LOG_LEVEL='DEBUG'
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
@@ -54,11 +54,9 @@ ROBOTSTXT_OBEY = False
 
 # MongoDB config
 MONGODB = {
-        'username': 'gmarignier',
-        'password': 'xZX7Tb4xkFSrAf8w',
-        'host': 'mongodb.services.dev.mp.mo.sap.corp',
-        'db': 'gmarignier_openweb',
-        'port': 27017
+    'host': 'localhost',
+    'db': 'company-crawler',
+    'port': 27017
 }
 
 # Retry request if a 999 received
