@@ -65,3 +65,7 @@ Crawling of Linkedin company pages and building of the database associated.
 ## Settings
 
 - All scrapy settings can be found in crawler/settings.py
+
+## Bugs
+
+- When using the _crawl companies_ command, we can't abort process with **Ctrl-C** and have to kill the terminal to exit it.
