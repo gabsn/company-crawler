@@ -2,14 +2,14 @@
 
 Crawling of Linkedin company pages and building of the database associated.
 
-## Setup
+## Setup for Ubuntu
 
 1. Install pip and virtualenv
 
   ```bash
   sudo apt-get install python-pip virtualenv
   ```
-
+  
 2. Clone the project
 
   ```bash
@@ -29,6 +29,12 @@ Crawling of Linkedin company pages and building of the database associated.
 
   ```bash
   source install.sh
+  ```
+  
+5. [Install](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/) and setup the Mongo database
+
+  ```bash
+  sudo service mongod start
   ```
 
 ## Commands
