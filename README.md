@@ -50,3 +50,13 @@ Crawling of Linkedin company pages and building of the database associated.
   ```bash
   crawl companies
   ```
+
+## MongoDB
+- Useful commands
+
+  ```bash
+  mongo
+  use company-crawler
+  show collections
+  db.linkedin_links.find()
+  ```
