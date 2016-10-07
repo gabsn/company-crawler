@@ -60,3 +60,7 @@ Crawling of Linkedin company pages and building of the database associated.
   show collections
   db.linkedin_links.find()
   ```
+
+## Settings
+
+- All scrapy settings can be found in crawler/settings.py
