@@ -17,7 +17,7 @@ Crawling of Linkedin company pages and building of the database associated.
   cd company-crawler
   ```
   
-3. Setup a virtual environment
+3. Setup a virtual environment (make sure there is no error message)
 
   ```bash
   virtualenv env
@@ -39,13 +39,13 @@ Crawling of Linkedin company pages and building of the database associated.
 
 ## Commands
 
-1. Get all company page urls and put them in a Mongo database
+1. Get all company page urls and put them in linkedin_links collection
 
   ```bash
   crawl links
   ```
 
-2. Download each company page, parse it and put the data in another database
+2. Download each company page, parse it and put the data in linkedin_company collection
 
   ```bash
   crawl companies
@@ -56,6 +56,7 @@ Crawling of Linkedin company pages and building of the database associated.
 
   ```bash
   mongo
+  show dbs
   use company-crawler
   show collections
   db.linkedin_links.find()
